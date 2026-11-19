@@ -1,0 +1,13 @@
+[data-floating-menu][popover] {
+  color: inherit;
+  border: 0 solid transparent;
+}
+
+[data-floating-menu][popover]:not(:popover-open) {
+  display: none !important;
+}
+
+[data-floating-menu][popover]::backdrop {
+  background: transparent;
+  pointer-events: none;
+}

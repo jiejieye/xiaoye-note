@@ -1,0 +1,11 @@
+# 运行数据与本机文件，切勿提交
+user-data/
+recovery/
+cache/
+validation/
+target/
+*.exe
+bridge/node.exe
+app/sync/project.json
+tools/private-denylist.txt
+.xiaoye-public-export

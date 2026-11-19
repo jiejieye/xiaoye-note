@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 360" width="720" height="360" role="img" aria-label="演示：复制通知文字，打开识别，自动填好标题日期时间，点导入后出现在日历上">
+<title>识别导入演示</title>
+<style>
+  text { font-family: "Microsoft YaHei UI", "PingFang SC", "Noto Sans CJK SC", sans-serif; }
+  .t { fill: #eeeeee; font-size: 14px; }
+  .s { fill: #9a9a9a; font-size: 12px; }
+  .b { font-weight: 700; }
+  .loop { animation-duration: 10s; animation-iteration-count: infinite; animation-timing-function: ease; }
+  #sel { animation-name: sel; opacity: 0; }
+  @keyframes sel { 0%, 5% { opacity: 0 } 9%, 22% { opacity: 1 } 26%, 100% { opacity: 0 } }
+  #copyTip { animation-name: copytip; opacity: 0; }
+  @keyframes copytip { 0%, 10% { opacity: 0 } 13%, 22% { opacity: 1 } 26%, 100% { opacity: 0 } }
+  #cursor { animation-name: cursor; }
+  @keyframes cursor {
+    0% { transform: translate(250px, 300px) } 8% { transform: translate(60px, 132px) } 20% { transform: translate(286px, 132px) }
+    28% { transform: translate(612px, 28px) } 31% { transform: translate(612px, 28px) scale(.85) } 33% { transform: translate(612px, 28px) }
+    52% { transform: translate(650px, 300px) } 55% { transform: translate(650px, 300px) scale(.85) } 57% { transform: translate(650px, 300px) }
+    80% { transform: translate(560px, 330px) } 100% { transform: translate(250px, 300px) } }
+  #btnFlash { animation-name: btnflash; opacity: 0; }
+  @keyframes btnflash { 0%, 29% { opacity: 0 } 31% { opacity: 1 } 36%, 100% { opacity: 0 } }
+  #panel { animation-name: panel; opacity: 0; }
+  @keyframes panel { 0%, 32% { opacity: 0; transform: translateY(10px) } 36%, 58% { opacity: 1; transform: translateY(0) } 62%, 100% { opacity: 0; transform: translateY(0) } }
+  #f1 { animation-name: f1; } #f2 { animation-name: f2; } #f3 { animation-name: f3; }
+  @keyframes f1 { 0%, 38% { opacity: 0 } 41%, 100% { opacity: 1 } }
+  @keyframes f2 { 0%, 42% { opacity: 0 } 45%, 100% { opacity: 1 } }
+  @keyframes f3 { 0%, 46% { opacity: 0 } 49%, 100% { opacity: 1 } }
+  #importFlash { animation-name: importflash; opacity: 0; }
+  @keyframes importflash { 0%, 54% { opacity: 0 } 56% { opacity: 1 } 60%, 100% { opacity: 0 } }
+  #pill { animation-name: pill; opacity: 0; transform-origin: 450px 222px; }
+  @keyframes pill { 0%, 61% { opacity: 0; transform: scale(.6) } 66% { opacity: 1; transform: scale(1.08) } 69%, 94% { opacity: 1; transform: scale(1) } 98%, 100% { opacity: 0 } }
+  #cellGlow { animation-name: glow; opacity: 0; }
+  @keyframes glow { 0%, 62% { opacity: 0 } 67% { opacity: .9 } 80%, 100% { opacity: 0 } }
+  #step1 { animation-name: st1; } #step2 { animation-name: st2; } #step3 { animation-name: st3; }
+  @keyframes st1 { 0%, 26% { fill: #ffd21a } 27%, 100% { fill: #6b6c70 } }
+  @keyframes st2 { 0%, 26% { fill: #6b6c70 } 27%, 56% { fill: #ffd21a } 57%, 100% { fill: #6b6c70 } }
+  @keyframes st3 { 0%, 56% { fill: #6b6c70 } 57%, 100% { fill: #ffd21a } }
+</style>
+<rect width="720" height="360" rx="14" fill="#232426"/>
+<g>
+  <text x="24" y="34" class="t b" font-size="15">① 复制通知文字</text>
+  <rect x="24" y="54" width="250" height="150" rx="12" fill="#2f3033" stroke="#45464a"/>
+  <circle cx="48" cy="82" r="12" fill="#4db6ac"/><text x="68" y="87" class="s">项目群</text>
+  <rect x="40" y="104" width="220" height="66" rx="10" fill="#3b3d41"/>
+  <rect id="sel" class="loop" x="50" y="118" width="200" height="40" rx="4" fill="#4f8cc9" fill-opacity=".45"/>
+  <text x="54" y="134" class="t">下周三下午三点半到五点</text>
+  <text x="54" y="154" class="t">项目讨论</text>
+  <g id="copyTip" class="loop"><rect x="150" y="182" width="104" height="26" rx="6" fill="#ffd21a"/><text x="162" y="200" fill="#2a2100" font-size="13" class="b">Ctrl + C 复制</text></g>
+  <text x="24" y="246" class="t b" font-size="15">② 点“识别”自动填好</text>
+  <text x="24" y="270" class="s">日期、时间、标题一次识别，</text>
+  <text x="24" y="288" class="s">已存在的日程不会重复导入。</text>
+  <text x="24" y="322" class="t b" font-size="15">③ 导入到日历</text>
+  <circle id="step1" class="loop" cx="14" cy="29" r="5" fill="#ffd21a"/>
+  <circle id="step2" class="loop" cx="14" cy="241" r="5" fill="#6b6c70"/>
+  <circle id="step3" class="loop" cx="14" cy="317" r="5" fill="#6b6c70"/>
+</g>
+<g>
+  <rect x="300" y="12" width="404" height="336" rx="12" fill="#3a3b3d" stroke="#4a4b4e"/>
+  <text x="316" y="40" class="t b" font-size="16">2026年11月</text>
+  <rect x="560" y="22" width="44" height="26" rx="7" fill="#2f3033" stroke="#55575b"/><text x="569" y="40" class="t" font-size="13">今日</text>
+  <rect x="610" y="22" width="44" height="26" rx="7" fill="#2f3033" stroke="#55575b"/><text x="619" y="40" class="t b" font-size="13">识别</text>
+  <rect id="btnFlash" class="loop" x="610" y="22" width="44" height="26" rx="7" fill="#ffd21a" fill-opacity=".35" stroke="#ffd21a"/>
+  <rect x="660" y="22" width="32" height="26" rx="7" fill="#2f3033" stroke="#55575b"/><text x="670" y="40" class="t">+</text>
+  <g font-size="12">
+    <text x="330" y="74" class="s">一</text><text x="386" y="74" class="s">二</text><text x="442" y="74" class="s">三</text><text x="498" y="74" class="s">四</text><text x="554" y="74" class="s">五</text><text x="610" y="74" class="s">六</text><text x="666" y="74" class="s">日</text>
+  </g>
+  <g stroke="#4a4b4e" fill="none">
+    <rect x="312" y="84" width="380" height="252"/>
+    <path d="M366 84v252M422 84v252M478 84v252M534 84v252M590 84v252M646 84v252M312 168h380M312 252h380"/>
+  </g>
+  <g class="t" font-size="13">
+    <text x="318" y="102">16</text><text x="372" y="102">17</text><text x="428" y="102">18</text><text x="484" y="102">19</text><text x="540" y="102" fill="#ffd21a">20</text><text x="596" y="102">21</text><text x="652" y="102">22</text>
+    <text x="318" y="186">23</text><text x="372" y="186">24</text><text x="428" y="186">25</text><text x="484" y="186">26</text><text x="540" y="186">27</text><text x="596" y="186">28</text><text x="652" y="186">29</text>
+    <text x="318" y="270">30</text>
+  </g>
+  <rect x="538" y="110" width="48" height="16" rx="4" fill="#e57373"/><text x="542" y="122" fill="#3a0b0b" font-size="10">写方案</text>
+  <rect x="594" y="110" width="48" height="16" rx="4" fill="#ffd21a"/><text x="598" y="122" fill="#3b2a00" font-size="10">交周报</text>
+  <rect x="426" y="194" width="48" height="16" rx="4" fill="#81c784"/><text x="430" y="206" fill="#173404" font-size="10">读书会</text>
+  <rect id="cellGlow" class="loop" x="423" y="169" width="54" height="82" fill="#ffd21a" fill-opacity=".16" stroke="#ffd21a"/>
+  <g id="pill" class="loop"><rect x="426" y="214" width="48" height="16" rx="4" fill="#64b5f6"/><text x="429" y="226" fill="#0c2b4a" font-size="10">项目讨论</text></g>
+</g>
+<g id="panel" class="loop">
+  <rect x="370" y="76" width="300" height="250" rx="12" fill="#2b2c2e" stroke="#55575b"/>
+  <text x="386" y="104" class="t b" font-size="15">识别</text>
+  <rect x="424" y="88" width="42" height="24" rx="6" fill="#ffd21a" fill-opacity=".16" stroke="#c9a400"/><text x="433" y="105" fill="#ffd21a" font-size="12">通知</text>
+  <rect x="472" y="88" width="42" height="24" rx="6" fill="none" stroke="#55575b"/><text x="481" y="105" class="t" font-size="12">课程</text>
+  <rect x="386" y="122" width="268" height="26" rx="7" fill="#36373a" stroke="#4a4b4e"/><text x="394" y="140" class="s">下周三下午三点半到五点 项目讨论</text>
+  <text x="386" y="168" class="t" font-size="12">识别 1 项 · 新增 1</text>
+  <rect x="386" y="178" width="268" height="104" rx="9" fill="none" stroke="#45464a"/>
+  <g id="f1" class="loop"><rect x="396" y="188" width="14" height="14" rx="3" fill="#ffd21a"/><path d="M399 195l3 3 6-6" stroke="#2a2100" stroke-width="2" fill="none"/><rect x="416" y="184" width="228" height="24" rx="6" fill="#36373a"/><text x="424" y="201" class="t">项目讨论</text></g>
+  <g id="f2" class="loop"><text x="396" y="232" class="s">日期</text><rect x="424" y="217" width="92" height="24" rx="6" fill="#36373a"/><text x="432" y="234" class="t" font-size="13">2026/11/25</text></g>
+  <g id="f3" class="loop"><text x="524" y="232" class="s">时间</text><rect x="552" y="217" width="92" height="24" rx="6" fill="#36373a"/><text x="558" y="234" class="t" font-size="13">15:30–17:00</text></g>
+  <text x="396" y="268" class="s" font-size="11">按参考日期换算；已提取时间，请核对。</text>
+  <rect x="580" y="290" width="76" height="28" rx="8" fill="#ffd21a"/><text x="592" y="309" fill="#1a1500" font-size="13" class="b">导入 1 项</text>
+  <rect id="importFlash" class="loop" x="580" y="290" width="76" height="28" rx="8" fill="#ffffff" fill-opacity=".45"/>
+</g>
+<g id="cursor" class="loop"><path d="M0 0v18l5-5 4 9 3-1-4-9h7z" fill="#ffffff" stroke="#111" stroke-width="1.2"/></g>
+</svg>

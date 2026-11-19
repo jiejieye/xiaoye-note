@@ -1,0 +1,556 @@
+:root {
+  --control-size: 32px;
+  --control-radius: 8px;
+  --control-font-size: 13px;
+  --control-weight: 500;
+  --control-border: color-mix(in srgb, var(--line), transparent 20%);
+  --control-bg: color-mix(in srgb, var(--panel-color), transparent 68%);
+  --control-text: color-mix(in srgb, var(--text), transparent 12%);
+  --control-active-border: color-mix(in srgb, var(--accent), transparent 55%);
+  --control-active-bg: color-mix(in srgb, var(--accent), transparent 88%);
+  --control-active-text: var(--accent);
+  --control-error-text: #ef6c78;
+}
+
+.subscription-title-row { display: flex; align-items: center; gap: 6px; min-width: 0; }
+.subscription-title-row > input { flex: 1; min-width: 0; }
+.event-editor .subscription-display { display: none; flex: none; margin: 0; }
+.event-editor[data-account-subscription="true"] .subscription-display { display: block; }
+.event-editor .subscription-display > summary { box-sizing: border-box; display: grid; place-items: center; width: 34px; height: 34px; padding: 0; border: 1px solid var(--control-border); border-radius: var(--control-radius); background: var(--control-bg); color: var(--text); font-size: 22px; list-style: none; cursor: pointer; }
+.subscription-display > summary::-webkit-details-marker { display: none; }
+.subscription-display > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.subscription-display[open] > summary { border-color: var(--control-active-border); color: var(--control-active-text); }
+.subscription-display-options { box-sizing: border-box; width: 160px; padding: 5px 9px; border: 1px solid var(--control-border); border-radius: 8px; background: var(--panel-color); color: var(--text); box-shadow: 0 8px 22px #0003; }
+.event-editor .subscription-display-options label { display: flex; flex-direction: row; align-items: center; gap: 8px; margin: 6px 0; cursor: pointer; }
+.subscription-display-options input { accent-color: var(--accent); }
+.subscription-password { display: flex; flex-direction: column; gap: 4px; margin: 0 0 8px; }
+.subscription-account { display: flex; flex-direction: column; gap: 4px; margin: 0 0 8px; }
+.subscription-password-row { display: flex; align-items: center; gap: 6px; }
+.subscription-password-row > input { flex: 1; min-width: 0; }
+.subscription-date-label { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+.subscription-calculator { display: flex; flex-wrap: nowrap; align-items: center; gap: 6px; margin-top: 10px; }
+.event-editor .subscription-calculator select { width: 82px; flex: 0 1 82px; }
+.event-editor .subscription-calculator > input { width: 66px !important; flex: 0 0 66px; }
+.subscription-calculator [hidden] { display: none !important; }
+.subscription-calculator button { flex: none; white-space: nowrap; }
+.event-editor .subscription-expired-option { display: inline-flex; flex-direction: row; align-items: center; flex: none; gap: 4px !important; margin: 0; white-space: nowrap; font-size: 12px !important; }
+.subscription-expired-option input { width: auto; accent-color: var(--accent); }
+.account-subscription-fields[hidden] { display: none; }
+.account-subscription-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.account-subscription-grid label { display: flex; flex-direction: column; min-width: 0; gap: 4px; }
+.account-subscription-grid [hidden] { display: none; }
+.account-subscription-fields p { margin: 6px 0; font-size: 12px; line-height: 1.5; }
+.account-subscription-fields p:empty { display: none; }
+.account-subscription-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.event-editor :is(.account-subscription-actions, .subscription-calculator, .subscription-password-row, .subscription-date-label, .subscription-account, .subscription-extra-account) button { height: var(--control-size); padding: 0 8px; border: 1px solid var(--control-border); border-radius: var(--control-radius); background: var(--control-bg); color: var(--control-text); font: inherit; cursor: pointer; }
+.event-editor :is(.account-subscription-actions, .subscription-calculator, .subscription-password-row, .subscription-date-label, .subscription-account, .subscription-extra-account) button:hover:not(:disabled) { border-color: var(--control-active-border); background: var(--control-active-bg); color: var(--control-active-text); }
+.event-editor :is(.account-subscription-actions, .subscription-calculator, .subscription-password-row, .subscription-date-label, .subscription-account, .subscription-extra-account) button:disabled { opacity: .45; cursor: default; }
+.event-editor :is(.account-subscription-actions, .subscription-calculator, .subscription-password-row, .subscription-date-label, .subscription-account, .subscription-extra-account) button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.event-editor .subscription-date-label button { height: 22px; min-height: 22px; padding: 0 5px; font-size: 12px !important; }
+.account-subscription-history { max-height: 140px; overflow: auto; }
+.event-editor[data-account-subscription="true"] :is([data-task-options], .editor-stack, .event-status-options) { display: none !important; }
+.event-editor .event-type-field { display: grid; grid-template-columns: 42px minmax(0, 1fr); align-items: center; gap: 8px; margin: 0 0 8px; }
+.event-type-control { position: relative; min-width: 0; }
+.event-editor select.event-type-native { position: absolute; width: 1px !important; height: 1px !important; min-height: 0 !important; padding: 0 !important; opacity: 0; pointer-events: none; }
+.event-editor details.event-type-picker { margin: 0; padding: 0; border: 0; }
+.event-editor .event-type-picker > summary { display: flex; justify-content: space-between; align-items: center; box-sizing: border-box; width: 100%; min-height: 34px; padding: 5px 8px; border: 1px solid var(--control-border); border-radius: var(--control-radius); background: var(--soft); color: var(--text); font-size: 13px; line-height: 1.4; list-style: none; cursor: pointer; }
+.event-type-picker > summary::-webkit-details-marker { display: none; }
+.event-type-picker > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.event-type-picker[open] > summary { border-color: var(--control-active-border); }
+.event-type-picker[open] > summary svg { transform: rotate(180deg); }
+.event-type-menu { display: none; box-sizing: border-box; padding: 4px; border: 1px solid var(--control-border); border-radius: 8px; background: color-mix(in srgb, var(--panel-color) 96%, transparent); color: var(--text); backdrop-filter: blur(18px); box-shadow: 0 8px 22px #0003; }
+.event-type-picker[open] > .event-type-menu { display: block; }
+.event-editor .event-type-menu button { display: block; width: 100%; min-height: 32px; padding: 6px 10px; border: 0; border-radius: 5px; background: transparent; color: var(--text); font: inherit; text-align: left; cursor: pointer; }
+.event-editor .event-type-menu button:is(:hover, :focus-visible, [aria-selected="true"]) { background: var(--control-active-bg); color: var(--control-active-text); }
+.event-editor .event-type-menu button:focus-visible { outline: 1px solid var(--control-active-border); outline-offset: -1px; }
+.event-editor .event-type-menu button:disabled { opacity: .45; cursor: default; }
+:root[data-theme="light"] {
+  --control-active-text: color-mix(in srgb, var(--accent), #302715 65%);
+  --control-error-text: #92283d;
+}
+
+:is(
+  .worktree-title-row.worktree-actions-row > button,
+  .worktree-title-row.worktree-actions-row .worktree-project-menu > summary,
+  .calendar-modern .calendar-nav > button,
+  .calendar-more > summary,
+  .calendar-more-menu > button,
+  .calendar-modern .calendar-nav .calendar-title > button,
+  .calendar-modern .calendar-nav .view-switch > button,
+  .event-editor .editor-actions > button,
+  .todo-editor .editor-actions > button,
+  .event-editor .editor-head > button,
+  .todo-editor .editor-head > button,
+  .event-editor .event-kind > button,
+  .schedule-import button,
+  .today-tools > button,
+  .followup-float header > button,
+  .followup-return
+) {
+  box-sizing: border-box !important;
+  display: inline-grid !important;
+  place-items: center !important;
+  height: var(--control-size) !important;
+  min-height: var(--control-size) !important;
+  max-height: var(--control-size) !important;
+  padding: 0 8px !important;
+  border: 1px solid var(--control-border) !important;
+  border-radius: var(--control-radius) !important;
+  background: var(--control-bg) !important;
+  color: var(--control-text) !important;
+  font-family: inherit !important;
+  font-size: var(--control-font-size) !important;
+  font-weight: var(--control-weight) !important;
+  line-height: 1 !important;
+  white-space: nowrap;
+  box-shadow: none !important;
+}
+
+:is(.calendar-nav, .worktree-actions-row, .editor-head, .editor-actions, .event-kind, .schedule-import, .today-tools, .followup-float) button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+:is(.calendar-nav, .worktree-actions-row, .editor-head, .editor-actions, .event-kind, .schedule-import, .today-tools, .followup-float) button:disabled {
+  opacity: .45;
+  cursor: default;
+}
+:is(.calendar-nav, .worktree-actions-row, .editor-head, .editor-actions, .event-kind, .schedule-import, .today-tools, .followup-float) button:is(.active, :hover:not(:disabled)) {
+  border-color: var(--control-active-border) !important;
+  background: var(--control-active-bg) !important;
+  color: var(--control-active-text) !important;
+}
+:is(.calendar-nav, .today-tools) :is(.today-widget-chip, .trash-chip, .reopen-todo-chip, .holiday-toggle, .today-tool),
+.calendar-nav :is(.calendar-title, .view-switch) > button,
+:is(.event-editor, .todo-editor) .editor-head > button {
+  width: var(--control-size) !important;
+  min-width: var(--control-size) !important;
+  max-width: var(--control-size) !important;
+  padding: 0 !important;
+}
+.calendar-modern .view-switch { height: var(--control-size); min-height: var(--control-size); }
+.glass-app.calendar .surface-body:has(.calendar-modern.month) { overflow: hidden !important; }
+.calendar-modern.month .calendar-grid { flex: 1 1 0; height: 0; min-height: 0; grid-auto-rows: max-content; overflow: clip; scrollbar-width: none; }
+.calendar-modern.month .calendar-grid.month-scrollable { overflow-x: hidden; overflow-y: auto; }
+.calendar-modern.month .calendar-grid::-webkit-scrollbar { display: none; }
+.calendar-modern.month .calendar-grid.continuous-months {
+  display: grid;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overflow-anchor: none;
+  overscroll-behavior-y: contain;
+  scroll-padding-top: 8px;
+}
+.continuous-months > [data-continuous-month],
+.continuous-month-grid {
+  display: contents;
+}
+.continuous-months > [data-continuous-month]:first-child .calendar-cell:first-child {
+  grid-column-start: var(--month-start-column);
+}
+.continuous-month-label {
+  margin-left: 4px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.followup-float { --control-size: 26px; --control-radius: 6px; }
+.followup-float header > button { width: var(--control-size); padding: 0 !important; }
+.followup-item { min-height: 32px; }
+.followup-return { font-size: 12px !important; }
+
+:is(.event-editor, .todo-editor, .schedule-import) :is(input:not([type="checkbox"]):not([type="hidden"]), select) {
+  height: 34px !important;
+  min-height: 34px !important;
+  border: 1px solid var(--control-border);
+  border-radius: var(--control-radius) !important;
+  background: var(--soft);
+  color: var(--text);
+  font: inherit !important;
+  font-size: var(--control-font-size) !important;
+  padding: 5px 8px !important;
+}
+:is(.event-editor, .todo-editor, .schedule-import) :is(input, select, textarea):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+.event-editor .event-task-fields { grid-template-columns: minmax(0, 1fr) 115px; }
+.event-editor .event-task-fields .event-status-option { justify-self: start; grid-column: 1 / -1; }
+.event-editor .event-status-option { height: var(--control-size); border-color: var(--control-border); border-radius: var(--control-radius); background: var(--control-bg); font-weight: var(--control-weight) !important; }
+.event-editor .event-status-option:has(input:checked) { border-color: var(--control-active-border); background: var(--control-active-bg); color: var(--control-active-text); }
+.event-status-row .event-color-picker {
+  display: grid !important;
+  grid-template-columns: auto minmax(0, 1fr) 24px !important;
+  flex: 0 0 100%;
+  min-width: 0;
+  gap: 8px !important;
+}
+.event-color-label { color: var(--muted); font-size: 13px; }
+.event-status-row .event-color-picker > .event-color-options {
+  display: flex !important;
+  flex-wrap: nowrap;
+  min-width: 0;
+  gap: 6px !important;
+  padding: 4px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.event-color-options::-webkit-scrollbar { display: none; }
+.event-color-options > button { flex: 0 0 24px; }
+.event-status-row .event-color-picker > .event-palette-toggle {
+  position: relative;
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--control-border);
+  border-radius: 50%;
+  background: var(--control-bg);
+  color: var(--control-text);
+  cursor: pointer;
+}
+.event-palette-toggle > svg { width: 18px; height: 18px; }
+.event-editor .event-palette-toggle > input[type="color"] {
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  opacity: 0;
+  padding: 0 !important;
+  cursor: pointer;
+}
+.event-palette-toggle:is(:hover, :focus-within) { outline: 2px solid var(--accent); outline-offset: 2px; }
+.event-editor .editor-stack .event-link-field { grid-column: 1 / -1; order: 7; }
+.event-link-input { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px; min-width: 0; }
+.event-link-input > button {
+  height: 34px;
+  padding: 0 8px;
+  border: 1px solid var(--control-border);
+  border-radius: var(--control-radius);
+  background: var(--control-bg);
+  color: var(--control-text);
+  font: inherit;
+  cursor: pointer;
+}
+.event-link-input > button:hover:not(:disabled) { background: var(--control-active-bg); color: var(--control-active-text); }
+.event-link-input > button:disabled { opacity: .45; cursor: default; }
+.event-link-input > button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.calendar-cell.is-today .cell-date b { color: var(--control-active-text); }
+:is(.event-editor, .todo-editor) {
+  position: absolute !important;
+  top: 52px !important;
+  right: 12px !important;
+  max-height: calc(100% - 64px) !important;
+}
+:is(.event-editor, .todo-editor) {
+  scroll-padding-block: 58px 64px;
+}
+:is(.event-editor, .todo-editor) > .editor-head {
+  position: sticky;
+  top: -12px;
+  z-index: 3;
+  margin: -12px -12px 0;
+  padding: 12px;
+  background: inherit;
+}
+:is(.event-editor, .todo-editor) > .editor-actions {
+  bottom: -12px;
+  z-index: 3;
+  margin: 0 -12px -12px;
+  padding: 8px 12px 12px;
+  background: inherit;
+}
+:root :is(.event-editor, .todo-editor) .editor-actions > :is([data-save-event], [data-save-todo], [data-save-reminder-settings]) {
+  border-color: var(--control-active-border) !important;
+  background: var(--control-active-bg) !important;
+  color: var(--control-active-text) !important;
+  font-weight: 700 !important;
+}
+:root :is(.event-editor, .todo-editor) .editor-actions > .is-destructive {
+  color: var(--control-error-text) !important;
+}
+:root :is(.event-editor, .todo-editor) .editor-actions > .is-destructive:hover:not(:disabled) {
+  border-color: color-mix(in srgb, var(--control-error-text), transparent 55%) !important;
+  background: color-mix(in srgb, var(--control-error-text), transparent 92%) !important;
+  color: var(--control-error-text) !important;
+}
+[data-editor-status] { margin: 0; font-size: 12px; line-height: 1.6; overflow-wrap: anywhere; }
+[data-editor-status]:empty, .page-status:empty { display: none; }
+[data-editor-status].is-error, .page-status-error { color: var(--control-error-text); }
+:root[data-theme="light"] .event-editor [data-event-error] { color: var(--control-error-text); }
+[data-editor-status].is-success { color: var(--control-active-text); }
+.page-status {
+  position: absolute;
+  top: 46px;
+  left: 12px;
+  right: 12px;
+  z-index: 35;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border: 1px solid var(--control-border);
+  border-radius: var(--control-radius);
+  background: var(--panel-color);
+  font-size: 12px;
+  line-height: 1.6;
+}
+.page-status > span { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.page-status > button {
+  flex: 0 0 auto;
+  min-height: 28px;
+  padding: 0 8px;
+  border: 1px solid var(--control-border);
+  border-radius: 6px;
+  background: var(--control-bg);
+  color: var(--control-text);
+  font: inherit;
+}
+.page-status > button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+@media (prefers-reduced-transparency: reduce) {
+  .followup-float { background: var(--panel-color); backdrop-filter: none; -webkit-backdrop-filter: none; }
+}
+
+.calendar-modern .calendar-nav { flex-wrap: nowrap !important; align-items: center !important; position: relative; z-index: 25; }
+.calendar-modern .calendar-title { margin-right: auto; }
+.calendar-more { position: relative; flex: none; }
+.calendar-more > summary { width: 32px; padding: 0 !important; list-style: none; cursor: pointer; }
+.calendar-more > summary::-webkit-details-marker { display: none; }
+.calendar-more > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.calendar-more-menu { position: absolute; top: 38px; right: 0; z-index: 50; width: 180px; max-height: 300px; overflow-y: auto; padding: 6px; border-radius: 12px; background: var(--panel-color); backdrop-filter: blur(16px); box-shadow: 0 8px 24px rgba(0,0,0,.18); }
+.calendar-modern .calendar-more-menu > button { display: flex !important; justify-content: flex-start !important; width: 100% !important; min-width: 100% !important; max-width: none !important; border-color: transparent !important; gap: 8px; margin: 2px 0; padding: 0 10px !important; }
+.calendar-more-menu .calendar-tool-icon, .calendar-more-menu .reopen-todo-icon { display: none; }
+.calendar-more-menu > button:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.calendar-add { width: 32px; padding: 0 !important; }
+
+@media (max-width: 620px) {
+  .calendar-modern .calendar-nav { gap: 4px !important; }
+  .calendar-modern .calendar-title strong { max-width: 130px; overflow: hidden; text-overflow: ellipsis; }
+  .calendar-modern .calendar-nav > [data-schedule-import] { padding-inline: 7px; }
+}
+
+.calendar-modern .calendar-nav > .view-switch.mini-switch {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  align-items: stretch !important;
+  gap: 0 !important;
+  height: 32px !important;
+  min-height: 32px !important;
+  padding: 3px !important;
+  overflow: hidden !important;
+  border: 1px solid var(--line) !important;
+  border-radius: 8px !important;
+  background: rgba(0, 0, 0, .18) !important;
+}
+.calendar-modern .calendar-nav > .view-switch.mini-switch::before { border-radius: 6px; }
+.calendar-modern .calendar-nav > .view-switch.mini-switch > button {
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 6px !important;
+  background: transparent !important;
+  color: var(--muted) !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+}
+.calendar-modern .calendar-nav > .view-switch.mini-switch > button:not(.active):hover {
+  background: color-mix(in srgb, var(--text), transparent 88%) !important;
+  color: var(--text) !important;
+}
+:root .calendar-modern .calendar-nav > .view-switch.mini-switch > button.active {
+  border: 0 !important;
+  background: transparent !important;
+  color: #111 !important;
+}
+
+:root .calendar-modern .calendar-nav > button:is([data-today], [data-schedule-import], [data-toggle-followup]) {
+  font-size: 14px !important;
+  font-weight: 700 !important;
+}
+
+:root .calendar-modern .calendar-nav > button:is([data-today], [data-schedule-import], [data-toggle-followup]),
+.task-options { display: grid; gap: 8px; margin-block: 8px; }
+.task-options label { display: grid; grid-template-columns: 70px minmax(0, 1fr); align-items: center; gap: 8px; font-size: 13px; }
+.goal-fields { display: grid; gap: 8px; }
+.task-options [hidden], .event-editor .event-task-choice[hidden] { display: none !important; }
+.task-option-error:empty { display: none; }
+.task-option-error, [data-reminder-error] { color: var(--control-error-text); font-size: 12px; }
+.goal-parent-label { color: var(--text); max-width: 40%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; }
+.task-row:has(.goal-parent-label) .checkbox { border-color: #ffd21a; }
+.task-type-flow { color: #ff8a65; font-size: 12px; }
+.task-row.add-row > select { flex: 0 0 auto; max-width: 70px; height: 28px; border: 1px solid var(--control-border); border-radius: 6px; background: var(--soft); color: var(--text); font: inherit; font-size: 12px; }
+.reminder-settings-hint { color: var(--muted); font-size: 12px; line-height: 1.6; }
+
+.wecom-reminder-dialog {
+  -webkit-app-region: no-drag;
+  box-sizing: border-box;
+  width: min(420px, calc(100vw - 24px));
+  max-height: calc(100vh - 24px);
+  padding: 0;
+  overflow: auto;
+  border: 1px solid var(--control-border);
+  border-radius: 12px;
+  color: var(--text);
+  background: color-mix(in srgb, var(--panel-color), transparent 8%);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 12px 36px #0003;
+  font-family: inherit;
+  font-size: 13px;
+}
+.wecom-reminder-dialog::backdrop { background: #0003; }
+.wecom-reminder-dialog form { display: grid; gap: 12px; padding: 14px; }
+.wecom-reminder-dialog [hidden] { display: none !important; }
+.wecom-reminder-dialog header { display: flex; align-items: center; justify-content: space-between; gap: 12px; position: sticky; top: -14px; margin: -14px -14px 0; padding: 14px; background: var(--panel-color); z-index: 2; }
+.wecom-reminder-dialog h2 { margin: 0; font-size: 15px; font-weight: 700; }
+.wecom-reminder-dialog p { margin: 0; line-height: 1.6; }
+.wecom-reminder-dialog .wecom-field-hint { color: var(--muted); font-size: 12px; }
+.wecom-reminder-dialog output { display: block; line-height: 1.6; overflow-wrap: anywhere; }
+.wecom-reminder-dialog output.is-error { color: var(--control-error-text); }
+.wecom-reminder-dialog .wecom-field { display: grid; gap: 6px; }
+.wecom-reminder-dialog .wecom-webhook-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 6px; }
+.wecom-reminder-dialog input[type="password"] { box-sizing: border-box; width: 100%; min-width: 0; height: 34px; padding: 5px 8px; border: 1px solid var(--control-border); border-radius: var(--control-radius); background: var(--soft); color: var(--text); font: inherit; }
+.wecom-reminder-dialog .wecom-enable { display: flex; align-items: center; gap: 8px; }
+.wecom-reminder-dialog input[type="checkbox"] { width: 16px; height: 16px; margin: 0; accent-color: var(--accent); }
+.wecom-reminder-dialog button { box-sizing: border-box; height: 32px; padding: 0 10px; border: 1px solid var(--control-border); border-radius: var(--control-radius); color: var(--control-text); background: var(--control-bg); font: inherit; cursor: pointer; }
+.wecom-reminder-dialog header button { width: 32px; padding: 0; }
+.wecom-reminder-dialog button:hover:not(:disabled) { background: var(--control-active-bg); border-color: var(--control-active-border); color: var(--control-active-text); }
+.wecom-reminder-dialog button:disabled { opacity: .45; cursor: default; }
+.wecom-reminder-dialog :is(button, input, select, textarea):focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.calendar-cell:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.page-status { pointer-events: none; }
+.wecom-reminder-dialog :is(footer, .wecom-secondary) { display: flex; gap: 8px; }
+.wecom-reminder-dialog footer > button { flex: 1; }
+.wecom-reminder-dialog footer { position: sticky; bottom: -14px; padding: 8px 0 14px; margin-bottom: -14px; background: var(--panel-color); z-index: 2; }
+.wecom-tabs { display: flex; gap: 6px; }
+.wecom-tabs > button { flex: 1; }
+.wecom-tabs > button.active { border-color: var(--control-active-border); background: var(--control-active-bg); color: var(--control-active-text); }
+.wecom-rules-dialog { width: min(520px, calc(100vw - 24px)); }
+.wecom-rule-list { display: grid; gap: 6px; }
+.wecom-rule-row { display: grid; grid-template-columns: minmax(0, 1fr) auto auto auto; gap: 8px; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--control-border); }
+.wecom-rule-row label { min-width: 0; display: flex; align-items: center; gap: 7px; }
+.wecom-rule-row b { font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.wecom-rule-row > span { color: var(--muted); font-size: 12px; }
+.wecom-rule-editor { display: grid; gap: 10px; padding-top: 12px; border-top: 1px solid var(--control-border); }
+.wecom-rule-editor-head, .wecom-rule-preview-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.wecom-rule-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.wecom-rule-editor :is(input:not([type="checkbox"]), select, textarea) { box-sizing: border-box; width: 100%; min-width: 0; border: 1px solid var(--control-border); border-radius: var(--control-radius); color: var(--text); background: var(--soft); padding: 6px 8px; font: inherit; }
+.wecom-rule-editor :is(input:not([type="checkbox"]), select) { height: 34px; }
+.wecom-rule-editor textarea { min-height: 120px; resize: vertical; line-height: 1.5; }
+.wecom-rule-sources { display: flex; gap: 16px; flex-wrap: wrap; padding: 8px; border: 1px solid var(--control-border); border-radius: var(--control-radius); margin: 0; }
+.wecom-rule-sources label { display: flex; gap: 6px; align-items: center; }
+.wecom-variable-buttons { display: flex; gap: 5px; flex-wrap: wrap; }
+.wecom-variable-buttons button { height: 28px; font-size: 12px; }
+.wecom-rule-preview { margin: 0; min-height: 60px; max-height: 220px; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.7; font: inherit; border: 1px solid var(--control-border); border-radius: var(--control-radius); padding: 10px; background: var(--soft); }
+.wecom-rule-conflict { display: flex; flex-wrap: wrap; gap: 8px; }
+.wecom-rule-editor .is-error { color: var(--control-error-text); font-size: 12px; }
+
+.calendar-date-board { position: relative; }
+[data-calendar-scroll-hint] {
+  display: none;
+  position: absolute;
+  bottom: 5px;
+  left: 50%;
+  z-index: 2;
+  transform: translateX(-50%);
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: var(--panel-color);
+  color: var(--text);
+  font-size: 11px;
+  line-height: 1.5;
+  white-space: nowrap;
+  pointer-events: none;
+}
+[data-calendar-scroll-hint]:not([hidden]) { display: block; }
+.data-load-error {
+  align-self: center;
+  width: min(420px, calc(100% - 24px));
+  margin-block: auto;
+  padding: 12px;
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.6;
+}
+.data-load-error h2 { margin: 0; font-size: 16px; }
+.data-load-error p { color: var(--control-error-text); overflow-wrap: anywhere; }
+.data-load-error button {
+  min-height: 32px;
+  padding: 0 10px;
+  border: 1px solid var(--control-border);
+  border-radius: var(--control-radius);
+  background: var(--control-bg);
+  color: var(--control-text);
+  font: inherit;
+}
+.data-load-error button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* 2026-11-18 紧凑日程编辑框：类型并入标题栏，属性与标题同行，字段改行内标签，按内容定高 */
+.event-editor { grid-template-columns: minmax(0, 1fr) auto; column-gap: 6px !important; row-gap: 6px !important; align-content: start; }
+.event-editor > * { grid-column: 1 / -1; min-width: 0; }
+.event-editor > .editor-head { display: flex; align-items: center; gap: 6px; margin-bottom: 0 !important; padding-bottom: 6px !important; }
+.event-editor > .editor-head > b { flex: 0 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.event-editor > .editor-head > .event-kind { display: flex; gap: 4px; flex: 1 1 auto; min-width: 0; margin: 0; }
+.event-editor > .editor-head > .event-kind > button { padding: 0 7px !important; }
+.event-editor > .editor-head > button { margin-left: auto; flex: none; }
+.event-editor > .task-options { display: contents; }
+.event-editor:not([data-account-subscription="true"]):has(> .task-options) > .subscription-title-row { grid-column: 1; }
+.event-editor > .task-options > .event-type-field { grid-column: 2; display: block; width: 78px; margin: 0; }
+.event-editor > .task-options > .event-type-field > span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.event-editor > .task-options > .event-type-field .event-type-picker > summary { min-height: 34px; padding: 5px 6px 5px 9px; }
+.event-editor > .task-options > .goal-fields:not([hidden]) { display: grid; gap: 6px; }
+.event-editor > .task-options > .task-option-error:empty { display: none; }
+.event-editor .editor-stack { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 6px 8px !important; }
+.event-editor .editor-stack > label { flex-direction: row !important; align-items: center !important; gap: 6px !important; white-space: nowrap; }
+.event-editor .editor-stack > label > :is(input, select, div) { flex: 1 1 auto; min-width: 0; }
+.event-editor .editor-stack label:has([data-event-date]) { order: 0; grid-column: 1 !important; }
+.event-editor .editor-stack label:has([data-event-repeat]) { order: 1; grid-column: 2 !important; }
+.event-editor .editor-stack label:has([data-event-time]) { order: 2; grid-column: 1 !important; }
+.event-editor .editor-stack label:has([data-event-end-time]) { order: 3; grid-column: 2 !important; }
+.event-editor .editor-stack label:has([data-event-repeat-end]) { order: 4; grid-column: 1 / -1 !important; }
+.event-editor .editor-stack:has([data-event-repeat] option[value="none"]:checked) label:has([data-event-repeat-end]) { display: none !important; }
+.event-editor .editor-stack label:has([data-event-location]) { order: 5; grid-column: 1 / -1 !important; }
+.event-editor .editor-stack .event-link-field { order: 6; grid-column: 1 / -1 !important; }
+.event-editor .event-status-row { row-gap: 4px; }
+.event-editor .event-status-options:empty { display: none; }
+.event-editor > details > summary { padding: 2px 0; }
+.event-editor > details[open] > textarea { margin-top: 4px; }
+
+/* 2026-11-18 批量删除日程 */
+.calendar-batch-bar { display: inline-flex; align-items: center; gap: 6px; flex: none; }
+.calendar-batch-bar > span { color: var(--muted); font-size: 13px; white-space: nowrap; }
+.calendar-modern .calendar-nav .calendar-batch-bar > button { box-sizing: border-box; height: var(--control-size); padding: 0 10px; border: 1px solid var(--control-border); border-radius: var(--control-radius); background: var(--control-bg); color: var(--control-text); font: inherit; font-size: var(--control-font-size); cursor: pointer; }
+.calendar-modern .calendar-nav .calendar-batch-bar > button.is-destructive:not(:disabled) { border-color: color-mix(in srgb, var(--control-error-text), transparent 50%); background: color-mix(in srgb, var(--control-error-text), transparent 88%); color: var(--control-error-text); }
+.calendar-modern .calendar-nav .calendar-batch-bar > button:disabled { opacity: .45; cursor: default; }
+.calendar-modern.batch-deleting .calendar-cell { cursor: pointer; }
+.calendar-modern.batch-deleting .event-pill { position: relative; opacity: .62; }
+.calendar-modern.batch-deleting .event-pill.batch-selected { opacity: 1; outline: 2px solid var(--control-error-text); outline-offset: 1px; }
+.calendar-modern.batch-deleting .event-pill.batch-selected::after { content: "✓"; position: absolute; top: 50%; right: 4px; transform: translateY(-50%); font-size: 11px; font-weight: 700; }
+.event-editor :is(.subscription-account, .subscription-password) { flex-direction: row; align-items: center; gap: 6px; margin: 0 0 6px; white-space: nowrap; }
+.event-editor :is(.subscription-account, .subscription-password) > :is(input, div) { flex: 1 1 auto; min-width: 0; }
+.event-editor .subscription-calculator { margin-top: 8px; }
+.event-editor .subscription-account > label { margin: 0; }
+.event-editor .subscription-account > button { flex: none; }
+.subscription-extra-account { display: flex; align-items: center; gap: 6px; margin: 0 0 6px; }
+.event-editor .subscription-extra-account > input { flex: 1 1 0; min-width: 0; width: 0; }
+.event-editor .subscription-extra-account > input:first-child { flex: 0 1 90px; }
+.subscription-extra-account > button { flex: none; }
+.calendar-modern .event-pill b[data-account-label] { display: flex !important; align-items: center; gap: 4px; min-width: 0; }
+.event-pill b[data-account-label] > .subscription-name { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; opacity: 1; font-size: inherit; }
+.event-pill em.subscription-badge { flex: none; padding: 0 5px; border-radius: 4px; font-size: 11px; font-style: normal; font-weight: 600; line-height: 16px; background: rgb(0 0 0 / .22); color: #fff; }
+.event-pill em.subscription-badge.warn { background: #f2c94c; color: #3b2a00; }
+.event-pill em.subscription-badge.expired { background: #7a1414; color: #fff; }
+.calendar-modern.batch-deleting .calendar-nav > :is([data-schedule-import], [data-calendar-add]) { display: none !important; }
+/* 2026-11-18 账号/附加账号/密码三列对齐：名称 | 输入 | 按钮 */
+.event-editor .account-subscription-fields :is(.subscription-account, .subscription-extra-account, .subscription-password) { display: grid; grid-template-columns: 76px minmax(0, 1fr) 76px; align-items: center; gap: 6px; margin: 0 0 6px; }
+.event-editor .account-subscription-fields .subscription-password-row { display: contents; }
+.event-editor .account-subscription-fields :is(.subscription-account, .subscription-extra-account, .subscription-password) :is(input, button) { box-sizing: border-box; width: 100% !important; min-width: 0; }
+.event-editor .account-subscription-fields :is(.subscription-account, .subscription-extra-account, .subscription-password) button { padding: 0 4px; }
+.event-editor .account-subscription-fields :is(.subscription-account > label, .subscription-password > span) { padding-left: 2px; }
+.event-editor .account-subscription-fields .subscription-extra-account > input:first-child { padding-inline: 6px !important; }

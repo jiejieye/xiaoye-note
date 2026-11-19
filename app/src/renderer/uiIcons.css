@@ -1,0 +1,50 @@
+[data-ui-icon] > .ui-svg-icon {
+  width: 16px;
+  height: 16px;
+  display: block;
+  flex: 0 0 auto;
+  pointer-events: none;
+}
+
+span[data-ui-icon] {
+  display: inline-grid;
+  place-items: center;
+  vertical-align: middle;
+}
+
+.worktree-trash-actions .worktree-trash-icon > span[data-ui-icon] {
+  background: transparent !important;
+  -webkit-mask: none !important;
+  mask: none !important;
+}
+
+.worktree-folder .worktree-row .worktree-chevron[data-ui-morph="tree"]::before,
+.worktree-map .mind-node .worktree-chevron[data-ui-morph="tree"]::before {
+  display: none !important;
+  content: none !important;
+}
+
+.worktree-chevron[data-ui-morph="tree"] > .ui-svg-icon {
+  width: 12px;
+  height: 12px;
+  display: block;
+  pointer-events: none;
+}
+
+.done-toggle em.archive-chevron[data-ui-morph="archive"],
+.calendar-todo-edit .done-toggle em.archive-chevron[data-ui-morph="archive"] {
+  display: inline-grid !important;
+  place-items: center !important;
+  background: transparent !important;
+  -webkit-mask: none !important;
+  mask: none !important;
+  color: var(--accent) !important;
+  transform: none !important;
+}
+
+.archive-chevron[data-ui-morph="archive"] > .ui-svg-icon {
+  width: 24px;
+  height: 20px;
+  display: block;
+  pointer-events: none;
+}

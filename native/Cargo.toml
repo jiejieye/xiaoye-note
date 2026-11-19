@@ -1,0 +1,28 @@
+[package]
+name = "xiaoye-light"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "小叶便签-轻量隔离版"
+path = "src/main.rs"
+
+
+[dependencies]
+serde_json = "1"
+wry = "0.53"
+tao = "0.34"
+tray-icon = "0.21"
+global-hotkey = "0.7"
+rfd = "0.15"
+image = { version = "0.25", default-features = false, features = ["png", "jpeg", "ico", "gif", "webp", "bmp"] }
+base64 = "0.22"
+webview2-com = "0.38"
+windows = { version = "0.61", features = ["Win32_System_Com", "Win32_System_Com_StructuredStorage", "Win32_System_Variant", "Win32_System_WinRT", "Win32_UI_Shell_PropertiesSystem", "Data_Xml_Dom", "UI_Notifications"] }
+winreg = "0.56"
+windows-sys = { version = "0.61", features = ["Win32_Foundation", "Win32_UI_WindowsAndMessaging", "Win32_Graphics_Gdi", "Win32_System_Threading", "Win32_Security"] }
+
+[profile.release]
+opt-level = "s"
+lto = "thin"
+strip = true

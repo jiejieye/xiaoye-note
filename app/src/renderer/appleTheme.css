@@ -1,0 +1,395 @@
+/*
+ * 苹果风格设计层（最后加载，覆盖旧版叠加样式）
+ * - 系统字体栈、Apple 系统色与层级文字色
+ * - 提醒事项式圆形勾选框、iOS 开关、半透明材质弹层
+ * - 顶部状态栏、文件夹标签、日历“今天”保持原样式
+ */
+
+:root {
+  --apple-font: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei UI", "Segoe UI", sans-serif;
+  --apple-ease: cubic-bezier(.25, .1, .25, 1);
+  --apple-spring: cubic-bezier(.34, 1.36, .64, 1);
+  --apple-radius-s: 7px;
+  --apple-radius-m: 10px;
+  --apple-radius-l: 14px;
+  --apple-red: #ff453a;
+  --apple-green: #30d158;
+  --apple-fill: rgba(118, 118, 128, .24);
+  --apple-fill-2: rgba(118, 118, 128, .16);
+  --apple-fill-3: rgba(118, 118, 128, .10);
+  --apple-label-2: rgba(235, 235, 245, .62);
+  --apple-label-3: rgba(235, 235, 245, .32);
+  --apple-separator: rgba(255, 255, 255, .09);
+  --apple-material: rgba(40, 40, 43, .86);
+  --apple-thumb: #636366;
+  --apple-shadow-pop: 0 0 0 .5px rgba(0, 0, 0, .5), 0 12px 40px rgba(0, 0, 0, .42), 0 2px 8px rgba(0, 0, 0, .2);
+  --apple-tint: color-mix(in srgb, var(--accent), transparent 82%);
+  --apple-tint-text: color-mix(in srgb, var(--accent), white 12%);
+  --apple-focus: color-mix(in srgb, var(--accent), transparent 50%);
+}
+
+:root[data-theme="light"] {
+  --apple-red: #ff3b30;
+  --apple-green: #34c759;
+  --apple-fill: rgba(118, 118, 128, .16);
+  --apple-fill-2: rgba(118, 118, 128, .11);
+  --apple-fill-3: rgba(118, 118, 128, .07);
+  --apple-label-2: rgba(60, 60, 67, .62);
+  --apple-label-3: rgba(60, 60, 67, .32);
+  --apple-separator: rgba(60, 60, 67, .12);
+  --apple-material: rgba(252, 252, 254, .9);
+  --apple-thumb: #ffffff;
+  --apple-shadow-pop: 0 0 0 .5px rgba(0, 0, 0, .12), 0 12px 36px rgba(0, 0, 0, .14), 0 2px 6px rgba(0, 0, 0, .06);
+  --apple-tint: color-mix(in srgb, var(--accent), transparent 80%);
+  --apple-tint-text: color-mix(in srgb, var(--accent), black 42%);
+}
+
+/* ---------- 基础排版 ---------- */
+html, body {
+  font-family: var(--apple-font) !important;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "kern", "tnum";
+}
+button, input, textarea, select { font-family: inherit !important; }
+::selection { background: color-mix(in srgb, var(--accent), transparent 62%); }
+
+/* 窗口：圆角 + 发丝描边，贴边隐藏时保持直角（旧规则已处理 edge-left/right） */
+.glass-app {
+  border-radius: 12px;
+  box-shadow: inset 0 0 0 .5px color-mix(in srgb, var(--text), transparent 84%);
+}
+:root[data-theme="light"] .glass-app {
+  box-shadow: inset 0 0 0 .5px rgba(0, 0, 0, .14), inset 0 1px 0 rgba(255, 255, 255, .7);
+}
+
+/* 统一焦点环 */
+:is(button, summary, select, [tabindex]):focus-visible {
+  outline: 3px solid var(--apple-focus) !important;
+  outline-offset: 1px !important;
+}
+
+/* 主要操作按钮（保存）使用主色实心 */
+:is(.todo-editor, .event-editor, .reminder-editor) .editor-actions > button:first-child:not(.is-destructive) {
+  background: var(--accent) !important;
+  color: #1c1c1e !important;
+  font-weight: 600 !important;
+}
+:is(.todo-editor, .event-editor, .reminder-editor) .editor-actions > button:first-child:not(.is-destructive):hover {
+  background: color-mix(in srgb, var(--accent), white 14%) !important;
+  color: #1c1c1e !important;
+}
+:is(.todo-editor, .event-editor) .editor-actions > button.is-destructive,
+:is(.todo-editor, .event-editor) .editor-actions > button.is-destructive:hover {
+  background: color-mix(in srgb, var(--apple-red), transparent 86%) !important;
+  color: var(--apple-red) !important;
+}
+
+/* ---------- 待办列表（提醒事项风格） ---------- */
+.task-row {
+  min-height: 44px !important;
+  border-bottom: 0 !important;
+  position: relative;
+  transition: background-color .15s var(--apple-ease), opacity .25s var(--apple-ease);
+}
+.task-row::after {
+  content: "";
+  position: absolute;
+  left: 38px;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--apple-separator);
+  transform: scaleY(.6);
+  transform-origin: bottom;
+  pointer-events: none;
+}
+.task-row:not(.add-row):hover { background: var(--apple-fill-3); border-radius: var(--apple-radius-s); }
+.task-row:hover::after { opacity: 0; }
+.task-row .row-input {
+  font-size: 15px !important;
+  font-weight: 400 !important;
+  letter-spacing: 0;
+  color: var(--text) !important;
+}
+.task-row.completed { opacity: .5 !important; }
+.task-row.completed .row-input { text-decoration-color: var(--muted) !important; }
+
+/* 圆形勾选框：完成时外环 + 实心内点，任何主题色都清晰 */
+.checkbox {
+  width: 20px !important;
+  height: 20px !important;
+  border-radius: 50% !important;
+  border: 1.5px solid var(--apple-label-3) !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transition: border-color .18s var(--apple-ease), transform .18s var(--apple-spring), background .18s var(--apple-ease) !important;
+}
+.checkbox:not(.ghost):hover { border-color: var(--accent) !important; }
+.checkbox:not(.ghost):active { transform: scale(.86); }
+.checkbox.checked,
+:root[data-theme="light"] .checkbox.checked {
+  border-color: var(--accent) !important;
+  background: radial-gradient(circle, var(--accent) 0 5.5px, transparent 6px) !important;
+  box-shadow: none !important;
+}
+.checkbox.checked::after,
+.done-list .checkbox.checked::after { display: none !important; }
+.done-list .checkbox, .calendar-todo-edit .checkbox { width: 18px !important; height: 18px !important; border-radius: 50% !important; }
+.done-list .checkbox.checked { background: radial-gradient(circle, var(--accent) 0 4.5px, transparent 5px) !important; }
+.checkbox.ghost { border-style: dashed !important; opacity: .7; }
+
+.date-chip {
+  height: 20px !important;
+  padding: 0 7px !important;
+  border: 0 !important;
+  border-radius: 6px !important;
+  background: var(--apple-fill-2) !important;
+  color: var(--muted) !important;
+  font-size: 11.5px !important;
+  font-weight: 500 !important;
+  line-height: 20px !important;
+}
+.date-chip.overdue {
+  background: color-mix(in srgb, var(--apple-red), transparent 86%) !important;
+  color: var(--apple-red) !important;
+}
+.todo-meta { color: var(--apple-label-3) !important; font-size: 11.5px !important; }
+.task-row .row-icon {
+  color: var(--apple-label-3) !important;
+  border-radius: 6px !important;
+  opacity: 0;
+  transition: opacity .15s var(--apple-ease), color .15s var(--apple-ease), background-color .15s var(--apple-ease) !important;
+}
+.task-row:hover .row-icon, .task-row:focus-within .row-icon, .task-row .row-icon:focus-visible { opacity: 1; }
+.task-row .row-icon:hover { background: var(--apple-fill-2) !important; color: var(--text) !important; }
+.task-row .quick-delete-todo:hover { color: var(--apple-red) !important; }
+.task-row .row-icon.quick-delete-todo { opacity: 0 !important; }
+.task-row:is(:hover, :focus-within) .row-icon.quick-delete-todo, .task-row .row-icon.quick-delete-todo:focus-visible { opacity: 1 !important; }
+/* 快速输入识别提示 */
+.quick-parse-hint {
+  display: inline-flex;
+  align-items: center;
+  height: 20px;
+  padding: 0 7px;
+  border-radius: 6px;
+  background: var(--apple-tint);
+  color: var(--apple-tint-text);
+  font-size: 11.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  animation: apple-pop .22s var(--apple-spring);
+}
+.quick-parse-hint[hidden] { display: none !important; }
+.add-row { grid-template-columns: 28px minmax(0, 1fr) auto auto !important; }
+
+/* “已归档”分组标题：轻量的文字按钮，而非大色块 */
+.done-toggle {
+  height: 32px !important;
+  margin-top: 10px !important;
+  padding: 0 6px !important;
+  border: 0 !important;
+  border-radius: var(--apple-radius-s) !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: var(--muted) !important;
+}
+.done-toggle:hover { background: var(--apple-fill-3) !important; }
+.done-toggle b { color: var(--muted) !important; font-size: 13px !important; font-weight: 600 !important; }
+.done-toggle .done-badge {
+  min-width: 20px !important;
+  height: 18px !important;
+  padding: 0 6px !important;
+  border-radius: 999px !important;
+  background: var(--apple-fill) !important;
+  color: var(--muted) !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  line-height: 18px !important;
+  box-shadow: none !important;
+}
+
+.empty-row { color: var(--apple-label-3) !important; font-size: 13px !important; }
+.empty-hint { padding: 22px 8px !important; text-align: center; line-height: 1.9; border: 0 !important; }
+.empty-hint::after { display: none !important; }
+kbd {
+  display: inline-block;
+  min-width: 20px;
+  padding: 0 5px;
+  border-radius: 5px;
+  background: var(--apple-fill-2);
+  box-shadow: inset 0 -1px 0 var(--apple-separator);
+  color: var(--muted);
+  font: 600 11px/18px var(--apple-font);
+  text-align: center;
+}
+
+/* ---------- 便签 ---------- */
+/* 卡片比窗口更不透明，桌面壁纸再花也能看清文字；保留原来的左侧主题色条 */
+:root {
+  --note-card-bg: color-mix(in srgb, color-mix(in srgb, var(--panel-color), white 5%), transparent calc((1 - var(--window-opacity, .82)) * 30%));
+  --note-text: rgba(255, 255, 255, .95);
+}
+:root[data-theme="light"] {
+  --note-card-bg: color-mix(in srgb, #ffffff, transparent calc((1 - var(--window-opacity, .82)) * 25%));
+  --note-text: rgba(28, 27, 24, .95);
+}
+.note-card {
+  border-radius: 12px !important;
+  background: var(--note-card-bg) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .18) !important;
+  transition: box-shadow .2s var(--apple-ease) !important;
+}
+.note-card:focus-within { box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent), transparent 55%), 0 4px 14px rgba(0, 0, 0, .2) !important; }
+.note-card.highlight { box-shadow: 0 0 0 2px var(--accent) !important; }
+.note-card header input,
+.note-card [data-note-title],
+.add-note-card [data-new-note-title] {
+  color: var(--note-text) !important;
+}
+.note-card textarea {
+  color: var(--note-text) !important;
+  line-height: 1.6 !important;
+  /* 内容多高就多高，不必在小框里滚动 */
+  field-sizing: content;
+  max-height: 320px;
+}
+.note-list-modern .note-card:not(.add-note-card) > textarea { min-height: 24px !important; }
+.note-card textarea::placeholder, .note-card input::placeholder { color: color-mix(in srgb, var(--note-text), transparent 55%) !important; }
+.add-note-card { animation: apple-pop .24s var(--apple-spring); }
+.note-card .note-card-icon { color: var(--apple-label-3) !important; border-radius: 6px !important; }
+.note-card .note-card-icon:hover:not(:disabled) { color: var(--text) !important; background: var(--apple-fill-2) !important; }
+.note-card header .note-card-icon { opacity: 0; transition: opacity .15s var(--apple-ease) !important; }
+.note-card:hover header .note-card-icon,
+.note-card:focus-within header .note-card-icon,
+.note-card header details[open] .note-card-icon { opacity: 1; }
+.note-card .note-card-icon:disabled { opacity: 0 !important; }
+.note-images img { border-radius: 8px !important; }
+
+/* ---------- 弹层：设置 / 搜索 / 详情编辑器 / 菜单 ---------- */
+:is(.settings-panel, .search-panel, .todo-editor, .event-editor, .trash-panel, .note-paste-menu, .note-card-menu > div, .note-folder-menu > div, .calendar-more-menu, .work-node-menu, .worktree-project-menu > div) {
+  border: 0 !important;
+  border-radius: var(--apple-radius-l) !important;
+  background: var(--apple-material) !important;
+  box-shadow: var(--apple-shadow-pop) !important;
+  backdrop-filter: blur(30px) saturate(1.8) !important;
+  -webkit-backdrop-filter: blur(30px) saturate(1.8) !important;
+  color: var(--text) !important;
+}
+:is(.settings-panel, .search-panel, .todo-editor, .event-editor, .trash-panel) { animation: apple-sheet .22s var(--apple-ease); }
+:is(.note-paste-menu, .note-card-menu > div, .note-folder-menu > div, .calendar-more-menu, .work-node-menu, .worktree-project-menu > div) { border-radius: var(--apple-radius-m) !important; padding: 5px !important; }
+:is(.note-paste-menu, .note-card-menu > div, .note-folder-menu > div, .calendar-more-menu, .work-node-menu, .worktree-project-menu > div) button {
+  border-radius: 6px !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+}
+:is(.note-paste-menu, .note-card-menu > div, .note-folder-menu > div, .calendar-more-menu, .work-node-menu, .worktree-project-menu > div) button:hover {
+  background: var(--accent) !important;
+  color: #1c1c1e !important;
+}
+:is(.note-card-menu > div, .note-folder-menu > div) button.danger { color: var(--apple-red) !important; }
+:is(.note-card-menu > div, .note-folder-menu > div) button.danger:hover { background: var(--apple-red) !important; color: #fff !important; }
+
+/* 编辑器里的输入框：填充式，无描边 */
+:is(.todo-editor, .event-editor, .reminder-editor, .search-panel, .settings-panel, .folder-tools) :is(input:not([type="checkbox"]):not([type="range"]):not([type="color"]), select, textarea) {
+  border: 0 !important;
+  border-radius: 8px !important;
+  background-color: var(--apple-fill-2) !important;
+  color: var(--text) !important;
+  box-shadow: none !important;
+  transition: box-shadow .15s var(--apple-ease), background-color .15s var(--apple-ease) !important;
+}
+:is(.todo-editor, .event-editor, .reminder-editor, .search-panel, .settings-panel, .folder-tools) :is(input:not([type="checkbox"]):not([type="range"]):not([type="color"]), select, textarea):focus {
+  outline: none !important;
+  background-color: var(--apple-fill-3) !important;
+  box-shadow: 0 0 0 3px var(--apple-focus) !important;
+}
+:is(.todo-editor, .event-editor) .editor-head b { font-size: 15px !important; font-weight: 600 !important; }
+:is(.todo-editor, .event-editor, .reminder-editor) label { color: var(--muted) !important; font-size: 12.5px !important; }
+
+/* 搜索 */
+.search-panel .search-head input { height: 34px !important; padding-left: 10px !important; font-size: 14px !important; }
+.search-panel .search-results button { border-radius: 8px !important; }
+.search-panel .search-results button:is(:hover, :focus-visible) { background: var(--accent) !important; color: #1c1c1e !important; outline: none !important; }
+.search-panel .search-results button:is(:hover, :focus-visible) em { color: rgba(28, 28, 30, .7) !important; }
+.search-panel .search-section > b { color: var(--muted) !important; font-size: 11.5px !important; font-weight: 600 !important; letter-spacing: .02em; }
+
+/* 设置：分组列表 + iOS 开关 */
+.settings-panel { gap: 2px !important; padding: 8px !important; }
+.settings-panel > .switch-row:hover { background: var(--apple-fill-3) !important; }
+.settings-panel .switch-row input[type="checkbox"] {
+  width: 38px !important;
+  height: 23px !important;
+  border: 0 !important;
+  background: var(--apple-fill) !important;
+  transition: background-color .22s var(--apple-ease) !important;
+}
+.settings-panel .switch-row input[type="checkbox"]::before,
+.settings-panel .switch-row input[type="checkbox"]::after {
+  width: 19px !important;
+  height: 19px !important;
+  top: 2px !important;
+  left: 2px !important;
+  border: 0 !important;
+  border-radius: 50% !important;
+  background: #fff !important;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, .2), 0 0 0 .5px rgba(0, 0, 0, .04) !important;
+  transition: transform .26s var(--apple-spring) !important;
+}
+.settings-panel .switch-row input[type="checkbox"]:checked { background: var(--apple-green) !important; }
+.settings-panel .switch-row input[type="checkbox"]:checked::before,
+.settings-panel .switch-row input[type="checkbox"]:checked::after { transform: translateX(15px) !important; }
+.settings-panel .settings-segmented {
+  padding: 2px !important;
+  border: 0 !important;
+  border-radius: 8px !important;
+  background: var(--apple-fill) !important;
+}
+.settings-panel .settings-segmented button {
+  border: 0 !important;
+  border-radius: 6px !important;
+  background: transparent !important;
+  color: var(--muted) !important;
+  font-weight: 600 !important;
+  box-shadow: none !important;
+}
+.settings-panel .settings-segmented button.active {
+  background: var(--apple-thumb) !important;
+  color: var(--text) !important;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, .12), 0 0 0 .5px rgba(0, 0, 0, .04) !important;
+}
+.settings-panel .settings-actions button {
+  border: 0 !important;
+  border-radius: 8px !important;
+  background: var(--apple-fill-2) !important;
+  color: var(--text) !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  box-shadow: none !important;
+}
+.settings-panel .settings-actions button:hover { background: var(--apple-tint) !important; color: var(--apple-tint-text) !important; }
+.settings-panel input[type="range"] { accent-color: var(--accent); }
+.settings-shortcuts {
+  margin: 6px 2px 2px;
+  padding: 8px 8px 4px;
+  border-top: .5px solid var(--apple-separator);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 5px 10px;
+  align-items: center;
+  color: var(--muted);
+  font-size: 12px;
+}
+.settings-shortcuts > b { grid-column: 1 / -1; color: var(--muted); font-size: 11.5px; font-weight: 600; }
+.settings-shortcuts kbd { min-width: 18px; padding: 0 4px; }
+
+/* ---------- 动效 ---------- */
+@keyframes apple-pop { from { opacity: 0; transform: scale(.96); } to { opacity: 1; transform: none; } }
+@keyframes apple-sheet { from { opacity: 0; transform: translateY(-4px) scale(.985); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .quick-parse-hint, .add-note-card, :is(.settings-panel, .search-panel, .todo-editor, .event-editor, .trash-panel) { animation: none !important; }
+}
+
+/* 待办：进行中的列表优先占用高度，已归档列表只使用剩余空间 */
+.list-panel.todo-panel:not(.compact) > [data-scroll-key="todoActive"] { flex: 0 1 auto !important; min-height: 92px !important; }
+.list-panel.todo-panel:not(.compact) > [data-scroll-key="todoDone"] { flex: 1 1 0 !important; min-height: 0 !important; }

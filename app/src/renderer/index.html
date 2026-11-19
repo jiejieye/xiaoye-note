@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>小叶便签</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./syncPanel.css" />
+    <link rel="stylesheet" href="./scheduleImport.css" />
+    <link rel="stylesheet" href="./uiControls.css" />
+    <link rel="stylesheet" href="./floatingMenus.css" />
+    <link rel="stylesheet" href="./uiIcons.css" />
+    <link rel="stylesheet" href="./appleTheme.css" />
+  </head>
+  <body>
+    <div id="app" class="app-shell"></div>
+
+    <template id="event-modal-template">
+      <form class="modal-card" data-event-form>
+        <div class="modal-head">
+          <div><p class="eyebrow">日程</p><h2 data-modal-title>新增日程</h2></div>
+          <button class="icon-btn" type="button" data-close-modal title="关闭">x</button>
+        </div>
+        <label><span>标题</span><input name="title" required placeholder="输入日程标题" /></label>
+        <div class="field-grid">
+          <label><span>日期</span><input name="date" type="date" required /></label>
+          <label><span>颜色</span><select name="color"><option value="#4f8cc9">工作蓝</option><option value="#4da37b">生活绿</option><option value="#9a78c7">学习紫</option><option value="#d96b5f">重要红</option><option value="#d9a441">其他金</option></select></label>
+          <label><span>开始</span><input name="startTime" type="time" required /></label>
+          <label><span>结束</span><input name="endTime" type="time" required /></label>
+          <label><span>来源</span><input name="source" placeholder="如 工作日程" /></label>
+          <label><span>重复</span><select name="repeat"><option value="none">不重复</option><option value="daily">每天</option><option value="workdays">工作日</option><option value="weekly">每周</option><option value="monthly">每月</option><option value="yearly">每年</option></select></label>
+        </div>
+        <label><span>标签</span><input name="tags" placeholder="多个标签用空格或逗号分隔" /></label>
+        <label><span>备注</span><textarea name="note" rows="3" placeholder="可选"></textarea></label>
+        <label class="check-row"><input name="completed" type="checkbox" /><span>已完成</span></label>
+        <div class="modal-actions">
+          <button class="ghost-btn danger" type="button" data-delete-event>删除</button>
+          <button class="ghost-btn" type="button" data-close-modal>取消</button>
+          <button class="primary-btn" type="submit">保存</button>
+        </div>
+      </form>
+    </template>
+
+    <template id="todo-modal-template">
+      <form class="modal-card" data-todo-editor>
+        <div class="modal-head">
+          <div><p class="eyebrow">待办</p><h2 data-modal-title>编辑待办</h2></div>
+          <button class="icon-btn" type="button" data-close-modal title="关闭">x</button>
+        </div>
+        <label><span>标题</span><input name="title" required /></label>
+        <div class="field-grid">
+          <label><span>清单</span><select name="listId"></select></label>
+          <label><span>目标日</span><input name="targetDate" type="date" /></label>
+          <label><span>提醒</span><input name="reminderAt" type="datetime-local" /></label>
+          <label><span>重复</span><select name="repeat"><option value="none">不重复</option><option value="daily">每天</option><option value="workdays">工作日</option><option value="weekly">每周</option><option value="monthly">每月</option><option value="yearly">每年</option></select></label>
+        </div>
+        <label><span>标签</span><input name="tags" placeholder="多个标签用空格或逗号分隔" /></label>
+        <label class="check-row"><input name="completed" type="checkbox" /><span>已完成</span></label>
+        <div class="modal-actions">
+          <button class="ghost-btn danger" type="button" data-delete-todo>删除</button>
+          <button class="ghost-btn" type="button" data-close-modal>取消</button>
+          <button class="primary-btn" type="submit">保存</button>
+        </div>
+      </form>
+    </template>
+
+    <template id="note-modal-template">
+      <form class="modal-card note-editor" data-note-editor>
+        <div class="modal-head">
+          <div><p class="eyebrow">便签</p><h2 data-modal-title>编辑便签</h2></div>
+          <button class="icon-btn" type="button" data-close-modal title="关闭">x</button>
+        </div>
+        <label><span>标题</span><input name="title" required /></label>
+        <div class="field-grid">
+          <label><span>清单</span><select name="listId"></select></label>
+          <label><span>归档日期</span><input name="archiveDate" type="date" /></label>
+        </div>
+        <label><span>标签</span><input name="tags" placeholder="多个标签用空格或逗号分隔" /></label>
+        <label><span>内容</span><textarea name="body" rows="8" required></textarea></label>
+        <label class="check-row"><input name="archived" type="checkbox" /><span>已归档</span></label>
+        <div class="modal-actions">
+          <button class="ghost-btn danger" type="button" data-delete-note>删除</button>
+          <button class="ghost-btn" type="button" data-export-note>导出</button>
+          <button class="ghost-btn" type="button" data-close-modal>取消</button>
+          <button class="primary-btn" type="submit">保存</button>
+        </div>
+      </form>
+    </template>
+  </body>
+  <script src="../shared/schema.js"></script>
+  <script src="../shared/eventState.js"></script>
+  <script src="../shared/eventAddress.js"></script>
+  <script src="../shared/taskState.js"></script>
+  <script src="../shared/reminderRules.js"></script>
+  <script src="../shared/reminderTemplates.js"></script>
+  <script src="../shared/quickParse.js"></script>
+  <script src="../shared/accountSubscription.js"></script>
+  <script src="./accountSubscriptionEditor.js"></script>
+  <script src="./scheduleImport.js"></script>
+  <script src="./scheduleImportPanel.js"></script>
+  <script src="./vendor/ui-vendor.js"></script>
+  <script src="./floatingMenus.js"></script>
+  <script src="./uiIcons.js"></script>
+  <script src="./app.js"></script>
+  <script src="./syncPanel.js"></script>
+  <script src="./wechatReminderPanel.js"></script>
+  <script src="./wechatReminderRulesPanel.js"></script>
+</html>
