@@ -1,43 +1,59 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="720" height="220" viewBox="0 0 720 220" role="img" aria-labelledby="title desc">
   <title id="title">低内存，桌面常驻</title>
-  <desc id="desc">便签窗口靠边隐藏，空闲界面释放资源。托盘图标始终可用，再点即可唤回。</desc>
+  <desc id="desc">左侧是展开的便签窗口，右侧是靠边收起后的桌面。收起后空闲界面释放资源，点击黄色托盘图标可唤回。</desc>
   <style>
     text { font-family: "Microsoft YaHei UI", "PingFang SC", "Noto Sans CJK SC", sans-serif; }
     .heading { font-size: 21px; font-weight: 700; fill: #f1f1f1; }
-    .label { font-size: 15px; fill: #d1d2d5; }
-    .panel { animation: tuck 8s ease-in-out infinite; }
-    .glow { animation: glow 8s ease-in-out infinite; }
-    .meter { transform-origin: 439px 116px; animation: ease-down 8s ease-in-out infinite; }
-    @keyframes tuck { 0%, 24%, 92%, 100% { transform: translateX(0); } 40%, 76% { transform: translateX(177px); } }
-    @keyframes glow { 0%, 29%, 92%, 100% { opacity: 0; } 42%, 78% { opacity: .38; } }
-    @keyframes ease-down { 0%, 24%, 92%, 100% { transform: scaleX(1); } 42%, 78% { transform: scaleX(.3); } }
-    @media (prefers-reduced-motion: reduce) { .panel, .glow, .meter { animation: none; } .meter { transform: scaleX(.3); } }
+    .label { font-size: 15px; fill: #d8d9dd; }
+    .hint { font-size: 13px; fill: #babbc2; }
+    .tool { font-size: 12px; fill: #e5e6ec; }
+    .screen { fill: #2c3038; stroke: #51545b; }
+    .focus { fill: none; stroke: #ffd21a; stroke-width: 2; }
+    .open-focus { animation: open-focus 8s ease-in-out infinite; }
+    .tray-focus { animation: tray-focus 8s ease-in-out infinite; }
+    .outbound { animation: outbound 8s ease-in-out infinite; }
+    .inbound { animation: inbound 8s ease-in-out infinite; }
+    @keyframes open-focus { 0%, 20%, 90%, 100% { opacity: .9; } 35%, 75% { opacity: 0; } }
+    @keyframes tray-focus { 0%, 25%, 90%, 100% { opacity: 0; } 39%, 74% { opacity: .9; } }
+    @keyframes outbound { 0%, 19% { opacity: 0; transform: translateX(0); } 23% { opacity: 1; } 37% { opacity: 1; transform: translateX(53px); } 41%, 100% { opacity: 0; transform: translateX(53px); } }
+    @keyframes inbound { 0%, 70% { opacity: 0; transform: translateX(0); } 74% { opacity: 1; } 88% { opacity: 1; transform: translateX(-53px); } 92%, 100% { opacity: 0; transform: translateX(-53px); } }
+    @media (prefers-reduced-motion: reduce) {
+      .open-focus, .tray-focus, .outbound, .inbound { animation: none; }
+      .open-focus, .tray-focus { opacity: .55; }
+    }
   </style>
-  <defs><clipPath id="screen"><rect x="25" y="67" width="382" height="128" rx="12"/></clipPath></defs>
   <rect width="720" height="220" rx="14" fill="#232426"/>
-  <text x="25" y="41" class="heading">低内存，桌面常驻</text>
-  <g clip-path="url(#screen)">
-    <rect x="25" y="67" width="382" height="128" fill="#2d3038"/>
-    <path d="M25 127Q155 83 263 142T407 148V196H25Z" fill="#333b46"/>
-    <path d="M25 151Q137 117 245 154T407 158V196H25Z" fill="#3d4654"/>
-    <g class="panel">
-      <rect x="226" y="76" width="172" height="88" rx="8" fill="#292a2d" stroke="#565961"/>
-      <rect x="237" y="86" width="28" height="15" rx="4" fill="#ffd21a"/>
-      <rect x="270" y="89" width="47" height="9" rx="3" fill="#5d6068"/>
-      <path d="M236 112H388M236 127H388M236 142H388M268 106V153M298 106V153M328 106V153M358 106V153" stroke="#484a50"/>
-      <rect x="271" y="115" width="24" height="8" rx="2" fill="#81aedd"/>
-      <rect x="331" y="130" width="24" height="8" rx="2" fill="#c5a0ef"/>
-      <rect x="301" y="145" width="24" height="8" rx="2" fill="#7fcfa3"/>
-    </g>
-    <rect x="25" y="170" width="382" height="25" fill="#24262b"/>
-    <circle class="glow" cx="374" cy="182" r="12" fill="#ffd21a" opacity="0"/>
-    <rect x="369" y="177" width="10" height="10" rx="2.5" fill="#ffd21a"/>
-    <path d="M387 184l4-4 4 4" stroke="#a8abb4" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <text x="25" y="39" class="heading">低内存，桌面常驻</text>
+  <text x="695" y="38" class="hint" text-anchor="end">收起空闲界面，释放资源</text>
+
+  <rect x="25" y="59" width="286" height="116" rx="10" class="screen"/>
+  <rect x="409" y="59" width="286" height="116" rx="10" class="screen"/>
+  <path d="M26 154Q117 107 199 144T310 127V155H26ZM410 154Q501 107 583 144T694 127V155H410Z" fill="#3b4553"/>
+  <path d="M26 155H310V165Q310 174 301 174H35Q26 174 26 165ZM410 155H694V165Q694 174 685 174H419Q410 174 410 165Z" fill="#24262b"/>
+  <rect x="25" y="59" width="286" height="116" rx="10" class="focus open-focus"/>
+  <rect x="409" y="59" width="286" height="116" rx="10" class="focus tray-focus" opacity="0"/>
+
+  <g>
+    <rect x="83" y="69" width="211" height="78" rx="7" fill="#242528" stroke="#60636b"/>
+    <rect x="93" y="75" width="20" height="17" rx="4" fill="#ffd21a"/>
+    <text x="103" y="88" text-anchor="middle" font-size="11" fill="#231c00">日</text>
+    <text x="120" y="88" class="tool" letter-spacing="4">项待签</text>
+    <path d="m275 81 7 7m0-7-7 7M93 98H284M93 113H284M93 128H284M120 98V140M147 98V140M174 98V140M201 98V140M228 98V140M255 98V140" stroke="#676a71" stroke-width="1" fill="none"/>
+    <rect x="123" y="102" width="21" height="7" rx="2" fill="#81aedd"/>
+    <rect x="204" y="117" width="21" height="7" rx="2" fill="#c5a0ef"/>
+    <rect x="231" y="132" width="21" height="6" rx="2" fill="#7fcfa3"/>
   </g>
-  <rect x="25" y="67" width="382" height="128" rx="12" fill="none" stroke="#454850"/>
-  <text x="439" y="88" class="label">靠边隐藏，空闲时释放界面资源</text>
-  <rect x="439" y="111" width="240" height="10" rx="5" fill="#414248"/>
-  <rect class="meter" x="439" y="111" width="172" height="10" rx="5" fill="#ffd21a"/>
-  <circle cx="445" cy="160" r="5" fill="#ffd21a"/>
-  <text x="460" y="165" class="label">需要时，从托盘唤回</text>
+
+  <path d="M330 98h59m-5-5 5 5-5 5M390 139h-59m5-5-5 5 5 5" fill="none" stroke="#a0a2ad" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="333" cy="98" r="3.5" fill="#ffd21a" opacity="0" class="outbound"/>
+  <circle cx="387" cy="139" r="3.5" fill="#ffd21a" opacity="0" class="inbound"/>
+  <text x="360" y="85" class="hint" text-anchor="middle">靠边收起</text>
+  <text x="360" y="159" class="hint" text-anchor="middle">托盘唤回</text>
+
+  <rect x="686" y="89" width="8" height="33" rx="3" fill="#e1bf3a"/>
+  <rect x="647" y="156" width="20" height="18" rx="5" fill="none" stroke="#ffd21a" opacity="0" class="tray-focus"/>
+  <rect x="652" y="160" width="10" height="10" rx="2.5" fill="#ffd21a"/>
+  <path d="m676 167 4-4 4 4" fill="none" stroke="#a8abb4" stroke-width="1.5" stroke-linecap="round"/>
+  <text x="168" y="201" class="label" text-anchor="middle">展开使用</text>
+  <text x="552" y="201" class="label" text-anchor="middle">托盘常驻</text>
 </svg>
