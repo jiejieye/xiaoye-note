@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="220" viewBox="0 0 720 220" role="img" aria-labelledby="title desc">
+  <title id="title">低内存，桌面常驻</title>
+  <desc id="desc">便签窗口靠边隐藏，空闲界面释放资源。托盘图标始终可用，再点即可唤回。</desc>
+  <style>
+    text { font-family: "Microsoft YaHei UI", "PingFang SC", "Noto Sans CJK SC", sans-serif; }
+    .heading { font-size: 21px; font-weight: 700; fill: #f1f1f1; }
+    .label { font-size: 15px; fill: #d1d2d5; }
+    .panel { animation: tuck 8s ease-in-out infinite; }
+    .glow { animation: glow 8s ease-in-out infinite; }
+    .meter { transform-origin: 439px 116px; animation: ease-down 8s ease-in-out infinite; }
+    @keyframes tuck { 0%, 24%, 92%, 100% { transform: translateX(0); } 40%, 76% { transform: translateX(177px); } }
+    @keyframes glow { 0%, 29%, 92%, 100% { opacity: 0; } 42%, 78% { opacity: .38; } }
+    @keyframes ease-down { 0%, 24%, 92%, 100% { transform: scaleX(1); } 42%, 78% { transform: scaleX(.3); } }
+    @media (prefers-reduced-motion: reduce) { .panel, .glow, .meter { animation: none; } .meter { transform: scaleX(.3); } }
+  </style>
+  <defs><clipPath id="screen"><rect x="25" y="67" width="382" height="128" rx="12"/></clipPath></defs>
+  <rect width="720" height="220" rx="14" fill="#232426"/>
+  <text x="25" y="41" class="heading">低内存，桌面常驻</text>
+  <g clip-path="url(#screen)">
+    <rect x="25" y="67" width="382" height="128" fill="#2d3038"/>
+    <path d="M25 127Q155 83 263 142T407 148V196H25Z" fill="#333b46"/>
+    <path d="M25 151Q137 117 245 154T407 158V196H25Z" fill="#3d4654"/>
+    <g class="panel">
+      <rect x="226" y="76" width="172" height="88" rx="8" fill="#292a2d" stroke="#565961"/>
+      <rect x="237" y="86" width="28" height="15" rx="4" fill="#ffd21a"/>
+      <rect x="270" y="89" width="47" height="9" rx="3" fill="#5d6068"/>
+      <path d="M236 112H388M236 127H388M236 142H388M268 106V153M298 106V153M328 106V153M358 106V153" stroke="#484a50"/>
+      <rect x="271" y="115" width="24" height="8" rx="2" fill="#81aedd"/>
+      <rect x="331" y="130" width="24" height="8" rx="2" fill="#c5a0ef"/>
+      <rect x="301" y="145" width="24" height="8" rx="2" fill="#7fcfa3"/>
+    </g>
+    <rect x="25" y="170" width="382" height="25" fill="#24262b"/>
+    <circle class="glow" cx="374" cy="182" r="12" fill="#ffd21a" opacity="0"/>
+    <rect x="369" y="177" width="10" height="10" rx="2.5" fill="#ffd21a"/>
+    <path d="M387 184l4-4 4 4" stroke="#a8abb4" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  </g>
+  <rect x="25" y="67" width="382" height="128" rx="12" fill="none" stroke="#454850"/>
+  <text x="439" y="88" class="label">靠边隐藏，空闲时释放界面资源</text>
+  <rect x="439" y="111" width="240" height="10" rx="5" fill="#414248"/>
+  <rect class="meter" x="439" y="111" width="172" height="10" rx="5" fill="#ffd21a"/>
+  <circle cx="445" cy="160" r="5" fill="#ffd21a"/>
+  <text x="460" y="165" class="label">需要时，从托盘唤回</text>
+</svg>

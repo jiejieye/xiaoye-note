@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="220" viewBox="0 0 720 220" role="img" aria-labelledby="title desc">
+  <title id="title">企业微信每日定时提醒</title>
+  <desc id="desc">设定每天八点半后，企业微信群收到今日事项。时间与提醒内容可自选。</desc>
+  <style>
+    text { font-family: "Microsoft YaHei UI", "PingFang SC", "Noto Sans CJK SC", sans-serif; }
+    .heading { font-size: 21px; font-weight: 700; fill: #f1f1f1; }
+    .label { font-size: 15px; fill: #d1d2d5; }
+    .name { font-size: 17px; font-weight: 700; fill: #f1f1f1; }
+    .time { font-size: 37px; font-weight: 700; font-variant-numeric: tabular-nums; fill: #ffd21a; }
+    .message { animation: arrive 7s ease-out infinite; }
+    .dot { animation: notify 7s ease-in-out infinite; }
+    @keyframes arrive { 0%, 30% { opacity: .12; transform: translateY(7px); } 42%, 92% { opacity: 1; transform: translateY(0); } 100% { opacity: .12; transform: translateY(7px); } }
+    @keyframes notify { 0%, 12%, 50%, 100% { opacity: 0; transform: translateX(0); } 20% { opacity: 1; } 40% { opacity: 1; transform: translateX(79px); } 48% { opacity: 0; transform: translateX(79px); } }
+    @media (prefers-reduced-motion: reduce) { .message, .dot { animation: none; } .dot { opacity: 0; } }
+  </style>
+  <rect width="720" height="220" rx="14" fill="#232426"/>
+  <text x="25" y="41" class="heading">企业微信每日定时提醒</text>
+  <rect x="25" y="68" width="245" height="127" rx="12" fill="#2e3035" stroke="#484b54"/>
+  <circle cx="54" cy="96" r="9" fill="none" stroke="#ffd21a" stroke-width="1.8"/>
+  <path d="M54 90v6l4 2" stroke="#ffd21a" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+  <text x="72" y="101" class="label">每天定时</text>
+  <text x="44" y="151" class="time">08:30</text>
+  <text x="47" y="178" class="label">时间和内容自选</text>
+  <path d="M287 130h87m-8-6 8 6-8 6" fill="none" stroke="#858a95" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle class="dot" cx="290" cy="130" r="5" fill="#ffd21a" opacity="0"/>
+  <rect x="395" y="68" width="300" height="127" rx="12" fill="#2e3035" stroke="#484b54"/>
+  <text x="415" y="100" class="name">企业微信群</text>
+  <g class="message">
+    <path d="M421 113h243a7 7 0 0 1 7 7v52a7 7 0 0 1-7 7H421a7 7 0 0 1-7-7v-43l-7-6 7-3a7 7 0 0 1 7-7Z" fill="#34463e" stroke="#557461"/>
+    <text x="428" y="137" class="name">今日事项</text>
+    <text x="428" y="163" class="label">09:30 项目例会 · 15:00 交周报</text>
+  </g>
+</svg>
